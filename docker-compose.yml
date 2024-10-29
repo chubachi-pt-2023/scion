@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "4322:4321"
+    depends_on:
+      - db
+    environment:
+      - ATOMONO_DB_HOST=db
+      - ATOMONO_DB_PORT=5432
+      - ATOMONO_DB_USER=atomono
+      - ATOMONO_DB_PASSWORD=atomonopass
+      - ATOMONO_DB_NAME=atomonodb
+      - SERVER_PORT=4322
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=atomono
+      - POSTGRES_PASSWORD=atomonopass
+      - POSTGRES_DB=atomonodb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
